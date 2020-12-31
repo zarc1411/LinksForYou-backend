@@ -1,14 +1,17 @@
 require("dotenv").config();
+
 const express = require("express");
+
 const app = express();
-app.use(express.json());
 const cors = require("cors");
+
+app.use(express.json());
 app.use(cors());
 app.use(express.static("build"));
 console.log("hello world");
+
 const year = new Date().getFullYear();
 const mongoose = require("mongoose");
-const { request, response } = require("express");
 
 const url = process.env.MONGODB_URI;
 
@@ -52,10 +55,10 @@ app.post(`/${year}/`, (request, response) => {
       console.log(result);
       response.status(200).end();
     })
-    .catch((error) => console.log(error));
+    .catch((error) => next(error));
 });
 
-app.get(`/${year}/:month`, (request, response) => {
+app.get(`/${year}/:month`, (request, response, next) => {
   Month.find({ monthName: `${request.params.month}` })
     .then((result) => {
       if (result.length) {
@@ -65,10 +68,23 @@ app.get(`/${year}/:month`, (request, response) => {
         response.status(404).end();
       }
     })
-    .catch((error) => response.status(500).end());
+    .catch((error) => next(error));
 });
+
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: "unknown endpoint" });
+};
+app.use(unknownEndpoint);
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log("Server running on port 3001");
 });
+
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message);
+
+  next(error);
+};
+
+app.use(errorHandler);
