@@ -62,6 +62,7 @@ app.put(`/${year}/`, (request, response) => {
 app.get(`/${year}/:month`, (request, response, next) => {
   Month.find({ monthName: `${request.params.month}` })
     .then((result) => {
+      console.log(result);
       if (result.length > 0) {
         response.json(result);
       } else response.status(304).end();
