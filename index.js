@@ -37,7 +37,7 @@ const monthSchema = new mongoose.Schema({
 const Link = mongoose.model("Link", linkSchema);
 const Month = mongoose.model("Month", monthSchema);
 
-app.post(`/${year}/`, (request, response) => {
+app.put(`/${year}/`, (request, response) => {
   const linkToAdd = request.body;
   console.log("This is the body", linkToAdd);
   const link = new Link({
