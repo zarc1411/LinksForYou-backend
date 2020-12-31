@@ -4,16 +4,17 @@ const express = require("express");
 
 const app = express();
 const cors = require("cors");
-
+app.use(express.static("build"));
 app.use(express.json());
 app.use(cors());
-app.use(express.static("build"));
 console.log("hello world");
 
 const year = new Date().getFullYear();
 const mongoose = require("mongoose");
 
 const url = process.env.MONGODB_URI;
+console.log(url);
+console.log(typeof url);
 
 mongoose.connect(url, {
   useNewUrlParser: true,
