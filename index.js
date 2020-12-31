@@ -9,7 +9,6 @@ app.use(express.json());
 app.use(cors());
 console.log("hello world");
 
-const year = new Date().getFullYear();
 const mongoose = require("mongoose");
 
 const url = process.env.MONGODB_URI;
@@ -37,7 +36,7 @@ const monthSchema = new mongoose.Schema({
 const Link = mongoose.model("Link", linkSchema);
 const Month = mongoose.model("Month", monthSchema);
 
-app.put(`/${year}/`, (request, response) => {
+app.put(`/months/`, (request, response) => {
   const linkToAdd = request.body;
   console.log("This is the body", linkToAdd);
   const link = new Link({
@@ -59,7 +58,7 @@ app.put(`/${year}/`, (request, response) => {
     .catch((error) => next(error));
 });
 
-app.get(`/${year}/:month`, (request, response, next) => {
+app.get(`/months/:month`, (request, response, next) => {
   Month.find({ monthName: `${request.params.month}` })
     .then((result) => {
       console.log(result);
