@@ -58,7 +58,7 @@ app.get(`/months/:month`, (request, response, next) => {
     .then((result) => {
       if (result.length > 0) {
         response.json(result);
-      } else response.status(304).end();
+      } else response.status(200).end();
     })
     .catch((error) => next(error));
 });
